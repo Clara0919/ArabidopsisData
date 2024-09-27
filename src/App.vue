@@ -7,14 +7,13 @@
 
 <script setup>
 import { ref } from "vue";
-
+const googleSheetApiKey = process.env.VUE_APP_GoogleSheet_API_KEY;
 const data = ref(null);
 const sessionId = ref("9D47A91103D62528AB0CB8EDC693DE88");
 const idList = ref([]);
 const sheetRequest = new Request(
-  "https://sheets.googleapis.com/v4/spreadsheets/12dUoTPZM5Df0WSFuG5Y5xcpkQYVFT3yPLiSm8duCwd8/values/common_intervals?alt=json&key=AIzaSyDRO8bPY_lKNzk5udMUi9VyvyK6YIvJ_ps"
+  `https://sheets.googleapis.com/v4/spreadsheets/12dUoTPZM5Df0WSFuG5Y5xcpkQYVFT3yPLiSm8duCwd8/values/common_intervals?alt=json&key=${googleSheetApiKey}`
 );
-
 const getSheetData = async () => {
   await fetch(sheetRequest)
     .then((response) => {
