@@ -34,36 +34,34 @@ const getSheetData = async () => {
       console.log("錯誤:", err);
     });
 };
-const getPositionId = (data) => {
-  idList.value = []
-  data.forEach((item, index) => {
-    setTimeout(async () => {
-      const idRequest = new Request(
-        `http://127.0.0.1:5000/api/getId?position=${item}&sessionId=${sessionId.value}`,
-        { method: "GET", mode: 'cors' }  // 確保是 cors 模式 
-      );
-      await fetch(idRequest)
-        .then((response) => {
-
-          return response.json();
-        })
-        .then((res) => {
-          if (res.id) {
-            idList.value.push(res.id);
-          }
-
-        })
-        .catch((err) => {
-          console.log("id取得錯誤:", err);
-          return
-        });
-    }, 10000 * index);
-  });
+//查詢基因範圍對應的id
+const getPositionId = async (data) => {
+  idList.value = [];
+  for (let index = 0; index < data.length; index++) {
+    const item = data[index];
+    //每三秒執行一筆
+    await new Promise((resolve) => setTimeout(resolve, 3000 * index));
+    const idRequest = new Request(
+      `http://127.0.0.1:5000/api/getId?position=${item}&sessionId=${sessionId.value}`,
+      { method: "GET", mode: "cors" }
+    );
+    try {
+      const response = await fetch(idRequest);
+      const res = await response.json();
+      if (res.id) {
+        idList.value.push(res.id);
+      }
+    } catch (err) {
+      console.log("id取得錯誤:", err);
+      break;
+    }
+  }
 };
 const convertPosition = (data) => {
   return data.map((item) => {
-    return `Ch${item[0]}:${parseInt(item[1]) - 5000}...${parseInt(item[1]) + 5000
-      }`;
+    return `Ch${item[0]}:${parseInt(item[1]) - 5000}...${
+      parseInt(item[1]) + 5000
+    }`;
   });
 };
 </script>
