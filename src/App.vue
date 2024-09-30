@@ -23,7 +23,7 @@ const getSheetData = async () => {
     .then((res) => {
       res.values.splice(0, 1); //清除標題列
       res.values.forEach((row) => {
-        data.value.push(row[2]);
+        data.value.push(row[4]);
       });
     })
     .then(() => {
@@ -66,7 +66,7 @@ const getPositionId = async (data) => {
 //寫入google sheet
 const insertData = async () => {
   const insertRequest = new Request(
-    `https://script.google.com/macros/s/AKfycbxofbigyS39d9IIPygHM0nOP_DoC3KILSCbIcqZu84TuV7ByeIq9LRps6MPKiDtD9Cj/exec`,
+    `https://script.google.com/macros/s/AKfycbytJ5FNLfQNa3xodlIfo-HagkQmg-ly31EFLvRwV0VULkK1DhsdUZZfh4fWXJ894ALM/exec`,
     {
       method: "POST",
 
